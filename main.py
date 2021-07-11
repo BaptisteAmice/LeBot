@@ -9,6 +9,7 @@ import asyncio
 import datetime
 
 from keep_alive import keep_alive
+#permet de maintenir un bot créé sur replit 1h après déconnection du site
 
 import threading
 
@@ -27,7 +28,7 @@ wallpapers = sqlite3.connect('wallpapersDatabase.db')
 
 
 #connaitre le temps d'attentes avant de request de nouveau
-import requests
+import requests #création d'un évènement 
 
 
 r = requests.head(url="https://discord.com/api/v1")
@@ -90,7 +91,7 @@ mots=["chat","chapeau","turban","eau"]
 
 
 @client.event
-async def on_member_join(member):
+async def on_member_join(member): #lorsqu'un nouvel utilisateur rejoint un serveur où le bot est présent, ce dernier lui souhaite la bienvenue
   #identifiant du channel generel A CHANGER POUR UN NOUVEAU SERVER
   general_channel: discord.TextChannel = client.get_channel(568896288859619357)
   await general_channel.send(content=f"Bienvenue sur le serveur {member.display_name} !")
@@ -102,7 +103,7 @@ async def on_member_join(member):
 
 #debut des event"
 @client.event
-async def on_ready():
+async def on_ready(): #lorsque le bot est connecté au serveur, son status d'activité dans l'applicatione est changé et un message est envoyé dans la console
   activity = discord.Game(name="être en développement")
   await client.change_presence(status=discord.Status.idle, activity=activity)
   #annonce le log
@@ -119,9 +120,9 @@ async def on_ready():
 
 #cette fonction gere les messages
 @client.event
-async def on_message(message):
+async def on_message(message): #lorqu'un message est envoyé dans un serveur où le bot est présent
 
-  #si c'est un bot qui envoit un message, on ne fait rien
+  #si le message est envoyé par le bot lui même, il ne fait rien
   if message.author == client.user:
     return
 
@@ -195,10 +196,13 @@ async def on_message(message):
   #!parrot repete le message de l'utilisateur
   if message.content.startswith('!parrot '):
     await message.channel.send(message.content.split("!parrot ",1)[1])
+    # le bot renvoit le message de l'utilisateur (à l'exception du "!parrot "")
+
 
   if message.content.lower().startswith('!parrotm'):
     await message.channel.send(message.content.split("!parrotM ",1)[1]),
     await message.delete()
+    #idem que la commande parrot, cependant le message de l'utilisateur est ensuite supprimé
 
   #une commande changeante utilisee pour mes tests perso
   if message.content.startswith('!test'):
@@ -206,7 +210,7 @@ async def on_message(message):
   "./images/bidoofCard.jpg"
     ))
 
-  #toute la gestion des trivias, je detaillerai peut etre un jour (les peut etre s'accumulent)
+  #toute la gestion des trivias, je detaillerai peut etre un jour (les peut etre s'accumulent), cette gestion de base de données me vient d'un tuto que ej n'ai pas approfondis
   options=triviaDispo
   if "trivia" in db.keys():
     options.extend(db["trivia"])
@@ -291,15 +295,14 @@ async def on_message(message):
 
 
   
-    
- 
+#cette commande fait appel à une base sql créée par moi, pour renvoyer des liens de wallpaper
   if message.content.lower().startswith('!wallpaper'):
       lesWallpapers=[]
       if message.content.lower()==('!wallpaper') or message.content.lower()==('!wallpaper '):
-        commande=("SELECT lien from wallpapersTable")
+        commande=("SELECT lien from wallpapersTable") #la commande seule envoit un wallpaper aléatoire
         
       else:
-        origineSpecifie = (message.content.split("!wallpaper ",1)[1])
+        origineSpecifie = (message.content.split("!wallpaper ",1)[1]) #si le message contient un paramètre, le fond d'écran renvoyé à pour origine le paramètre
         commande=("SELECT lien from wallpapersTable where origine='"+origineSpecifie+"'")
         
       print(commande)
@@ -312,7 +315,7 @@ async def on_message(message):
       else:
         await message.channel.send(random.choice(lesWallpapers))
 
-  if message.content.lower().startswith('!origines'):
+  if message.content.lower().startswith('!origines'): 
     lesOrigines="origines : "
     lesLignes=wallpapers.execute("SELECT DISTINCT origine from wallpapersTable")
     for row in lesLignes:
