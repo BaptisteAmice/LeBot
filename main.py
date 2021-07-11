@@ -295,14 +295,16 @@ async def on_message(message): #lorqu'un message est envoyé dans un serveur où
 
 
   
-#cette commande fait appel à une base sql créée par moi, pour renvoyer des liens de wallpaper
+#cette commande fait appel à une base sql créée par moi-même, pour renvoyer des liens de wallpaper
+#si dessous sont donc utilisées des requêtes sql
+
   if message.content.lower().startswith('!wallpaper'):
       lesWallpapers=[]
       if message.content.lower()==('!wallpaper') or message.content.lower()==('!wallpaper '):
         commande=("SELECT lien from wallpapersTable") #la commande seule envoit un wallpaper aléatoire
         
       else:
-        origineSpecifie = (message.content.split("!wallpaper ",1)[1]) #si le message contient un paramètre, le fond d'écran renvoyé à pour origine le paramètre
+        origineSpecifie = (message.content.split("!wallpaper ",1)[1]) #si le message contient un paramètre, le fond d'écran renvoyé a pour origine le paramètre
         commande=("SELECT lien from wallpapersTable where origine='"+origineSpecifie+"'")
         
       print(commande)
