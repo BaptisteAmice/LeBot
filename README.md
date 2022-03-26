@@ -1,6 +1,6 @@
 # Le Bot
 
-Le Bot est le premier bot discord que j'ai réalisé.
+Le Bot est un bot discord de ma réalisation.
 Il est écrit en python, dans un but d'apprentissage et d'utilisation dans mes groupes d'amis.
 Il se compose de diverses fonctionnalités, ajoutées au fur et à mesures de mes idées et de ma formation.
 
